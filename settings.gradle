@@ -1,1 +1,1 @@
-include ':weathorapp', ':wheelview_lib', ':wheelview_lib'  //':app',-->
+include ':weathorapp',':wheelview_lib'

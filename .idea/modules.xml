@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/AddrssAndTimePicker.iml" filepath="$PROJECT_DIR$/AddrssAndTimePicker.iml" />
       <module fileurl="file://$PROJECT_DIR$/weathorapp/weathorapp.iml" filepath="$PROJECT_DIR$/weathorapp/weathorapp.iml" />
-      <module fileurl="file://$PROJECT_DIR$/wheelview_lib/wheelview_lib.iml" filepath="$PROJECT_DIR$/wheelview_lib/wheelview_lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wheelview_lib.iml" filepath="$PROJECT_DIR$/wheelview_lib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/wheelview_lib/wheelview_lib-wheelview_lib.iml" filepath="$PROJECT_DIR$/wheelview_lib/wheelview_lib-wheelview_lib.iml" />
     </modules>
   </component>
 </project>

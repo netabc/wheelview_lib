@@ -28,4 +28,6 @@ public class ApplicationTest extends ApplicationTestCase<Application> {
 //        presenter.searchWeather("101030100");
     }
 
+
+
 }

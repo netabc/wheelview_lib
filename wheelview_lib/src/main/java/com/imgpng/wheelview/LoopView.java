@@ -7,6 +7,7 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -46,7 +47,7 @@ public class LoopView extends View {
 
     int textSize;
     int maxTextWidth;
-    int maxTextHeight;
+    int maxTextHeight;//文本的高度
 
     int colorGray;
     int colorBlack;
@@ -106,20 +107,20 @@ public class LoopView extends View {
         gestureDetector = new GestureDetector(context, new LoopViewGestureListener(this));
         gestureDetector.setIsLongpressEnabled(false);
 
-        lineSpacingMultiplier = 2.0F;
+        lineSpacingMultiplier = 2.5F;
         isLoop = true;
-        itemsVisible = 9;
+        itemsVisible = 7;
         textSize = 0;
-        colorGray = 0xffafafaf;
+        colorGray = 0xff313131;
         colorBlack = 0xff313131;
-        colorLightGray = 0xffc5c5c5;
+        colorLightGray = 0xff313131;
 
         totalScrollY = 0;
         initPosition = -1;
 
         initPaints();
 
-        setTextSize(16F);
+        setTextSize(20f);
     }
 
     private void initPaints() {
@@ -128,6 +129,7 @@ public class LoopView extends View {
         paintOuterText.setAntiAlias(true);
         paintOuterText.setTypeface(Typeface.MONOSPACE);
         paintOuterText.setTextSize(textSize);
+        paintOuterText.setAlpha(160);
 
         paintCenterText = new Paint();
         paintCenterText.setColor(colorBlack);
@@ -139,6 +141,7 @@ public class LoopView extends View {
         paintIndicator = new Paint();
         paintIndicator.setColor(colorLightGray);
         paintIndicator.setAntiAlias(true);
+        paintIndicator.setAlpha(160);
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
             setLayerType(LAYER_TYPE_SOFTWARE, null);
@@ -149,7 +152,7 @@ public class LoopView extends View {
         if (items == null) {
             return;
         }
-
+        //计算高度和宽度
         measureTextWidthHeight();
 
         halfCircumference = (int) (maxTextHeight * lineSpacingMultiplier * (itemsVisible - 1));
@@ -227,7 +230,7 @@ public class LoopView extends View {
     public final void setTextSize(float size) {
         if (size > 0.0F) {
             textSize = (int) (context.getResources().getDisplayMetrics().density * size);
-            paintOuterText.setTextSize(textSize);
+            paintOuterText.setTextSize(textSize*0.8f);
             paintCenterText.setTextSize(textSize);
         }
     }
@@ -245,16 +248,15 @@ public class LoopView extends View {
         preCurrentIndex = position;
         totalScrollY = 0;
         initPosition = -1;
-//        requestLayout();
+        requestLayout();
     }
 
     public final void setListener(OnItemSelectedListener OnItemSelectedListener) {
         onItemSelectedListener = OnItemSelectedListener;
     }
-
     public final void setItems(List<String> items) {
         this.items = items;
-        remeasure();
+//        remeasure();
         invalidate();
     }
 
@@ -338,6 +340,7 @@ public class LoopView extends View {
             }
             k1++;
         }
+        //画框框
         canvas.drawLine(0.0F, firstLineY, measuredWidth, firstLineY, paintIndicator);
         canvas.drawLine(0.0F, secondLineY, measuredWidth, secondLineY, paintIndicator);
 
@@ -356,23 +359,27 @@ public class LoopView extends View {
                 int translateY = (int) (radius - Math.cos(radian) * radius - (Math.sin(radian) * maxTextHeight) / 2D);
                 canvas.translate(0.0F, translateY);
                 canvas.scale(1.0F, (float) Math.sin(radian));
+                int alpha = (int) (itemHeight/maxTextHeight*255);
+//                Log.e("透明",""+alpha);
                 if (translateY <= firstLineY && maxTextHeight + translateY >= firstLineY) {
                     // 条目经过第一条线
-                    canvas.save();
-                    canvas.clipRect(0, 0, measuredWidth, firstLineY - translateY);
-                    canvas.drawText(as[j1], getTextX(as[j1], paintOuterText, tempRect), maxTextHeight, paintOuterText);
-                    canvas.restore();
+//                    canvas.save();
+//                    canvas.clipRect(0, 0, measuredWidth, firstLineY - translateY);
+//                    canvas.drawText(as[j1], getTextX(as[j1], paintOuterText, tempRect), maxTextHeight, paintOuterText);
+//                    canvas.restore();
                     canvas.save();
                     canvas.clipRect(0, firstLineY - translateY, measuredWidth, (int) (itemHeight));
+//                    Log.e("高度，字体","itemHeight="+itemHeight+"|maxTextHeight="+maxTextHeight+"firstLineY - translateY="+(firstLineY - translateY));
                     canvas.drawText(as[j1], getTextX(as[j1], paintCenterText, tempRect), maxTextHeight, paintCenterText);
                     canvas.restore();
                 } else if (translateY <= secondLineY && maxTextHeight + translateY >= secondLineY) {
                     // 条目经过第二条线
+//                    canvas.save();
+//                    canvas.clipRect(0, 0, measuredWidth, secondLineY - translateY);
+//                    canvas.drawText(as[j1], getTextX(as[j1], paintCenterText, tempRect), maxTextHeight, paintCenterText);
+//                    canvas.restore();
                     canvas.save();
-                    canvas.clipRect(0, 0, measuredWidth, secondLineY - translateY);
-                    canvas.drawText(as[j1], getTextX(as[j1], paintCenterText, tempRect), maxTextHeight, paintCenterText);
-                    canvas.restore();
-                    canvas.save();
+//                    Log.e("高度，字体","itemHeight="+itemHeight+"|maxTextHeight="+maxTextHeight+"firstLineY - translateY="+(firstLineY - translateY));
                     canvas.clipRect(0, secondLineY - translateY, measuredWidth, (int) (itemHeight));
                     canvas.drawText(as[j1], getTextX(as[j1], paintOuterText, tempRect), maxTextHeight, paintOuterText);
                     canvas.restore();
@@ -380,10 +387,12 @@ public class LoopView extends View {
                     // 中间条目
                     canvas.clipRect(0, 0, measuredWidth, (int) (itemHeight));
                     canvas.drawText(as[j1], getTextX(as[j1], paintCenterText, tempRect), maxTextHeight, paintCenterText);
+
                     selectedItem = items.indexOf(as[j1]);
                 } else {
                     // 其他条目
                     canvas.clipRect(0, 0, measuredWidth, (int) (itemHeight));
+//                    Log.e("高度，字体","itemHeight="+itemHeight+"|maxTextHeight="+maxTextHeight+"firstLineY - translateY="+(firstLineY - translateY));
                     canvas.drawText(as[j1], getTextX(as[j1], paintOuterText, tempRect), maxTextHeight, paintOuterText);
                 }
                 canvas.restore();
