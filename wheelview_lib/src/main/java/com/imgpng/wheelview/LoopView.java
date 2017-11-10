@@ -43,6 +43,7 @@ public class LoopView extends View {
     Paint paintCenterText;
     Paint paintIndicator;
 
+
     List<String> items;
 
     int textSize;
@@ -72,8 +73,8 @@ public class LoopView extends View {
 
     int measuredHeight;
     int measuredWidth;
-    int paddingLeft = 0;
-    int paddingRight = 0;
+    int paddingLeft = 5;
+    int paddingRight = 5;
 
     // 半圆周长
     int halfCircumference;
@@ -259,6 +260,10 @@ public class LoopView extends View {
 //        remeasure();
         invalidate();
     }
+    public List<String> getItems() {
+        return items;
+    }
+
 
     @Override
     public int getPaddingLeft() {
@@ -387,7 +392,6 @@ public class LoopView extends View {
                     // 中间条目
                     canvas.clipRect(0, 0, measuredWidth, (int) (itemHeight));
                     canvas.drawText(as[j1], getTextX(as[j1], paintCenterText, tempRect), maxTextHeight, paintCenterText);
-
                     selectedItem = items.indexOf(as[j1]);
                 } else {
                     // 其他条目
@@ -413,6 +417,7 @@ public class LoopView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//        super.onMeasure(widthMeasureSpec,heightMeasureSpec);
         remeasure();
         setMeasuredDimension(measuredWidth, measuredHeight);
     }

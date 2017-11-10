@@ -63,48 +63,48 @@ public class WeatherPresenter {
         Toast.makeText(mContext, weather, Toast.LENGTH_SHORT).show();
     }
 
-    public void selected(final LoopView loopView, int index) {
-
-        if (loopView.getId() == R.id.loopview_province) {//省
-            if (index == 0) {
-                mWeather.loadCity(null);
-                if (mCitys != null) {
-                    mCitys.clear();
-                }
-            } else {
-                ItemBean bean = mProvinces.get(index);
-                mCitys = mModel.getCity(bean, "city");
-                ArrayList<String> datas = beanToString(mCitys);
-                mWeather.loadCity(datas);
-            }
-            mWeather.loadCounty(null);
-
-        } else if (loopView.getId() == R.id.loopview_city) {//市
-            if (index == 0) {
-                if (mCountys != null) {
-                    mWeather.loadCounty(null);
-                    mCountys.clear();
-                }
-            } else {
-                ItemBean bean = mCitys.get(index);
-                mCountys = mModel.getCity(bean, "county");
-                ArrayList<String> datas = beanToString(mCountys);
-                mWeather.loadCounty(datas);
-            }
-
-
-        } else if (loopView.getId() == R.id.loopview_county) {//县
-            ItemBean itemBean = mCountys.get(index);
-            final String cityID = mModel.getCityID(itemBean);
-            if (TextUtils.isEmpty(cityID)) {
-                return;
-            }
-            //请求网络 获取天气预报
-            showWeather(loopView, cityID);
-            Toast.makeText(mContext, "" + itemBean.getName(), Toast.LENGTH_SHORT).show();
-        }
-
-    }
+//    public void selected(final LoopView loopView, int index) {
+//
+//        if (loopView.getId() == R.id.loopview_province) {//省
+//            if (index == 0) {
+//                mWeather.loadCity(null);
+//                if (mCitys != null) {
+//                    mCitys.clear();
+//                }
+//            } else {
+//                ItemBean bean = mProvinces.get(index);
+//                mCitys = mModel.getCity(bean, "city");
+//                ArrayList<String> datas = beanToString(mCitys);
+//                mWeather.loadCity(datas);
+//            }
+//            mWeather.loadCounty(null);
+//
+//        } else if (loopView.getId() == R.id.loopview_city) {//市
+//            if (index == 0) {
+//                if (mCountys != null) {
+//                    mWeather.loadCounty(null);
+//                    mCountys.clear();
+//                }
+//            } else {
+//                ItemBean bean = mCitys.get(index);
+//                mCountys = mModel.getCity(bean, "county");
+//                ArrayList<String> datas = beanToString(mCountys);
+//                mWeather.loadCounty(datas);
+//            }
+//
+//
+//        } else if (loopView.getId() == R.id.loopview_county) {//县
+//            ItemBean itemBean = mCountys.get(index);
+//            final String cityID = mModel.getCityID(itemBean);
+//            if (TextUtils.isEmpty(cityID)) {
+//                return;
+//            }
+//            //请求网络 获取天气预报
+//            showWeather(loopView, cityID);
+//            Toast.makeText(mContext, "" + itemBean.getName(), Toast.LENGTH_SHORT).show();
+//        }
+//
+//    }
 
     private void showWeather(final LoopView loopView, final String cityID) {
         new Thread() {

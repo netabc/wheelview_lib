@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">WheelView_lib</string>
+    <string name="start_time">1993年01月01日 00时00分00秒</string>
+    <string name="end_time">2100年12月31日 23时59分59秒</string>
+    <string name="format_time">yyyy年MM月dd日 HH时mm分ss秒</string>
+    <string name="format_split"></string>
 </resources>
